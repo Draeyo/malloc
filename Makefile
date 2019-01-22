@@ -4,7 +4,9 @@ endif
 
 NAME = libft_malloc_$(HOSTTYPE).so
 
-SRC_FILES = malloc.c free.c realloc.c show_alloc_mem.c
+SYMLINK = libft_malloc.so
+
+SRC_FILES = malloc.c free.c #realloc.c show_alloc_mem.c
 
 SRC_PATH = srcs/
 
@@ -31,17 +33,17 @@ ENDC = \033[0m
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	@make -s -C $(LIB)
-	@$(CC) $(CFLAGS) -shared -o $@ $(OBJ) $(INC) -L$(LIB_PATH) $(LIB_NAME)
-	@ln -sf $(NAME) libft_malloc.so
+	@make -s -C $(LIB_PATH)
+	@$(CC) $(CFLAGS) -shared -o $@ $(OBJ) -L$(LIB_PATH) $(LIB_NAME)
+	@ln -sF $(NAME) $(SYMLINK)
 
 %.o: %.c
-	@$(CC) $(CFLAGS) $(INC) -o $@ -c $< -I$(LIB_PATH)
+	@$(CC) $(CFLAGS) -I $(INC) -o $@ -c $< -I$(LIB_PATH)
 
 clean:
 	@(rm -f $(OBJ))
 
 fclean: clean
-	@(rm -f $(NAME))
+	@(rm -f $(NAME) $(SYMLINK))
 
 re: fclean all

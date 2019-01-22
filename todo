@@ -1,0 +1,22 @@
+ex : 
+
+TINY :
+
+8192 bytes max for 128 allocs
+each alloc is 32 bytes of struct and 32 bytes of data x 128
+(32 * 128) + (32 * 128) = 4096 + 4096 = 8192
+(data + struct) * 128 = 8192 (pagesize * 2)
+
+SMALL :
+
+65526 bytes max for 128 allocs
+each alloc is 32 bytes of struct and 480 bytes of data x 128
+(32 * 128) + (480 * 128) = 4096 + 61440 = 65526
+(data + struct) * 128 = 65536 (pagesize * 16)
+
+LARGE is a zone by itself (struct + data)
+
+pour TINY et SMALL :
+zone = liste
+maillon = alloc
+liste des zones dans la globale

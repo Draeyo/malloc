@@ -1,20 +1,6 @@
 #include "malloc.h"
 #include <stdio.h>
 
-void	free(void *ptr)
-{
-	void	*tmp;
-	int		i;
-
-	tmp = ptr;
-	i = 0;
-	while (tmp++)
-	{
-		i++;
-	}
-	munmap(ptr, i);
-}
-
 static size_t	find_mem(void *ptr)
 {
 	t_info	*tmp;
@@ -42,22 +28,45 @@ static size_t	find_mem(void *ptr)
 		prev = tmp;
 		tmp = tmp->next;
 	}
-	return (-1);
+	return (0);
+}
+
+void	free(void *ptr)
+{
+	size_t	i;
+
+	if (ptr)
+	{
+		i = find_mem(ptr);
+		if (i == 0)
+			printf("Can\'t find mem.\n");
+		else
+		{
+			printf("free string : %s, on address %p\n", ptr, ptr);
+			if (!munmap(ptr, i))
+				printf("FREE DONE\n");
+			else
+				printf("FREE FAILED\n");
+		}
+	}
 }
 
 void	ft_free(void *ptr)
 {
 	size_t	i;
 
-	i = find_mem(ptr);
-	if (i == -1)
-		printf("Can\'t find mem.");
-	else
+	if (ptr)
 	{
-		printf("free string : %s, on address %p\n", ptr, ptr);
-		if (!munmap(ptr, i))
-			printf("FREE DONE\n");
+		i = find_mem(ptr);
+		if (i == 0)
+			printf("Can\'t find mem.");
 		else
-			printf("FREE FAILED\n");
+		{
+			printf("free string : %s, on address %p\n", ptr, ptr);
+			if (!munmap(ptr, i))
+				printf("FREE DONE\n");
+			else
+				printf("FREE FAILED\n");
+		}
 	}
 }
