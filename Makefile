@@ -45,5 +45,6 @@ clean:
 
 fclean: clean
 	@(rm -f $(NAME) $(SYMLINK))
+	@make -s -C $(LIB_PATH) fclean
 
 re: fclean all
