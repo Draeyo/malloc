@@ -1,0 +1,37 @@
+#include "malloc.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+int		main(int ac, char **av)
+{
+	char	*str;
+	char	*test;
+	char	*test2;
+	char	c;
+	int		nb;
+	int		i;
+
+	c = av[1][0];
+	nb = atoi(av[2]);
+	str = (char*)ft_malloc(nb + 1);
+	test = (char*)ft_malloc(nb + 1);
+	test2 = (char*)ft_malloc(nb + 1);
+	i = 0;
+	while (i < nb)
+	{
+		str[i] = c;
+		test[i] = c;
+		test2[i] = c;
+		i++;
+	}
+	str[i] = '\0';
+	test[i] = '\0';
+	test2[i] = '\0';
+	printf("str: %s\n", str);
+	printf("test: %s\n", test);
+	printf("test2: %s\n", test2);
+	ft_free(test2);
+	ft_free(test);
+	ft_free(str);
+	return (0);
+}
