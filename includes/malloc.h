@@ -20,10 +20,10 @@
 # define TINY_SIZE		(size_t)PAGE_SIZE * 2
 # define SMALL_SIZE		(size_t)PAGE_SIZE * 16
 
-# define TINY_DATA_SIZE		(size_t)(TINY_SIZE + META SIZE)
-# define SMALL_DATA_SIZE	(size_t)(SMALL_SIZE + META_SIZE)
+# define TINY_DATA_SIZE		(size_t)(TINY_SIZE + INFO_SIZE)
+# define SMALL_DATA_SIZE	(size_t)(SMALL_SIZE + INFO_SIZE)
 
-# define TINY_ZONE_SIZE		(size_t)(TINY__SIZE + INFO_SIZE) * 100
+# define TINY_ZONE_SIZE		(size_t)(TINY_SIZE + INFO_SIZE) * 100
 # define SMALL_ZONE_SIZE	(size_t)(SMALL_SIZE + INFO_SIZE) * 100
 
 # define TINY_TYPE		1
@@ -40,7 +40,7 @@ typedef struct			s_info
 
 typedef struct			s_each
 {
-		s_each			*next;
+		struct s_each	*next;
 		size_t			type;
 		size_t			size;
 		void			*loc;
@@ -55,7 +55,7 @@ typedef struct			s_page
 		t_info			*small_last;
 		t_info			*large;
 		t_info			*large_last;
-		t_each			overall;
+		t_each			*overall;
 }						t_page;
 
 t_page					g_mem;
@@ -68,4 +68,8 @@ t_page					g_mem;
  void	ft_free(void *ptr);
  void	*ft_malloc(size_t size);
 
+ void	join_free_mem(void);
+
+ t_info	*find_free_space(t_info *alloc, size_t size);
+ t_info	*find_specific(void *ptr);
 #endif

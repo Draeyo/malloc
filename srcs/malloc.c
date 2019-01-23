@@ -1,7 +1,7 @@
 #include "malloc.h"
 #include <stdio.h>
 
-static t_info	*search_space(t_info *alloc, size_t size)
+static t_info	*search_free_space(t_info *alloc, size_t size)
 {
 	t_info		*zone;
 
@@ -12,14 +12,26 @@ static t_info	*search_space(t_info *alloc, size_t size)
 			return (zone);
 		zone = zone->next;
 	}
-	return (NULL)
+	return (NULL);
+}
+
+static t_info	*search_specific(t_info *memtype, t_info *last, void *ptr)
+{
+	t_info		*tmp;
+
+	if (last && last->data <= ptr && ptr < (void*)last + last->size)
+		return (last);
+	tmp = memtype;
+	while (tmp && !(tmp->data <= ptr && ptr < (void*)tmp->data + tmp->size))
+		tmp = tmp->next;
+	return (tmp);
 }
 
 static void		update_info(t_info **alloc, size_t size)
 {
 	t_info		*new;
 	t_info		*tmp;
-	t_meta		*next;
+	t_info		*next;
 
 	new = *alloc;
 	next = new->next ? new->next : NULL;
@@ -35,27 +47,6 @@ static void		update_info(t_info **alloc, size_t size)
 		tmp->data = (void*)tmp + INFO_SIZE;
 		tmp->next = next;
 	}
-}
-
-static void		to_free(size_t size, void **addr, size_t type)
-{
-	t_info		*elem;
-	t_info		*tmp;
-
-	elem = mmap(0, sizeof(t_info), PROT, FLAGS, -1, 0);
-	elem->size = size;
-	elem->data = *addr;
-	elem->type = type;
-	elem->next = NULL;
-	tmp = g_mem.overall;
-	if (tmp)
-	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = elem;
-	}
-	else
-		g_mem.overall = elem;
 }
 
 static t_info	*alloc_zone(t_info **zone, size_t size)
@@ -79,7 +70,7 @@ static void		*alloc_tiny(size_t size)
 {
 	t_info		*alloc;
 
-	if (!(alloc = search_space(g_mem.tiny, size + INFO_SIZE)))
+	if (!(alloc = find_free_space(g_mem.tiny, size + INFO_SIZE)))
 	{
 		alloc = alloc_zone(&(g_mem.tiny), TINY_ZONE_SIZE);
 		update_info(&alloc, size);
@@ -97,7 +88,7 @@ static void		*alloc_small(size_t size)
 {
 	t_info		*alloc;
 
-	if (!(alloc = search_space(g_mem.small, size + INFO_SIZE)))
+	if (!(alloc = find_free_space(g_mem.small, size + INFO_SIZE)))
 	{
 		alloc = alloc_zone(&(g_mem.small), SMALL_ZONE_SIZE);
 		update_info(&alloc, size);
@@ -115,7 +106,7 @@ static void		*alloc_large(size_t size)
 {
 	t_info		*alloc;
 
-	if ((alloc = search_space(g_mem.large, size)))
+	if ((alloc = find_free_space(g_mem.large, size)))
 	{
 		alloc->next = NULL;
 		alloc->free = 0;
@@ -131,18 +122,18 @@ static void		*alloc_large(size_t size)
 	alloc->size = size - INFO_SIZE;
 	alloc->data = alloc + 1;
 	if (g_mem.large_last)
-		g_mem.large_last-> = alloc;
+		g_mem.large_last->next = alloc;
 	g_mem.large_last = alloc;
 	if (!g_mem.large)
 		g_mem.large = alloc;
 	return (alloc->data);
 }
 
-static void		set_each(t_each **last, size_t size, void *loc)
+static void		*set_each(t_each **last, size_t size, void *loc)
 {
 	t_each		*tmp;
 
-	if ((tmp = (t_each*)mmap(0, TINY_ZONE, PROT, FLAGS, -1, 0)) == MAP_FAILED)
+	if ((tmp = (t_each*)mmap(0, TINY_ZONE_SIZE, PROT, FLAGS, -1, 0)) == MAP_FAILED)
 		return (NULL);
 	if (*last)
 		(*last)->next = tmp;
@@ -159,9 +150,9 @@ static	void	set_info(size_t size, void *loc)
 	static t_each	*last = NULL;
 	t_each			*tmp;
 
-	if (!g_mem.each)
+	if (!g_mem.overall)
 	{
-		g_mem.each = set_each(&last, size, loc);
+		g_mem.overall = set_each(&last, size, loc);
 		return ;
 	}
 	if (last->left - sizeof(t_each) <= 0)
@@ -178,10 +169,36 @@ static	void	set_info(size_t size, void *loc)
 	last = tmp;
 }
 
+t_info		*find_free_space(t_info *alloc, size_t size)
+{
+	t_info	*tmp;
+
+	if (!(tmp = search_free_space(alloc, size)))
+		return (tmp);
+	join_free_mem();
+	if (!(tmp = search_free_space(alloc, size)))
+		return (tmp);
+	return (NULL);
+}
+
+t_info		*find_specific(void *ptr)
+{
+	t_info	*tmp;
+
+	if (!(tmp = search_specific(g_mem.tiny, g_mem.tiny_last, ptr)))
+		return (tmp);
+	if (!(tmp = search_specific(g_mem.small, g_mem.small_last, ptr)))
+		return (tmp);
+	if (!(tmp = search_specific(g_mem.large, g_mem.large_last, ptr)))
+		return (tmp);
+	return (NULL);
+}
+
 void	*malloc(size_t size)
 {
 	void	*ret;
 
+	set_info(size, NULL);
 	if (size <= 0 || size >= SIZE_MAX)
 		return (NULL);
 	else if (size <= TINY_SIZE)
@@ -199,7 +216,8 @@ void	*ft_malloc(size_t size)
 {
 	void	*ret;
 
-	if (size <= 0)
+	set_info(size, NULL);
+	if (size <= 0 || size >= SIZE_MAX)
 		return (NULL);
 	else if (size <= TINY_SIZE)
 		ret = alloc_tiny(size);
@@ -207,5 +225,8 @@ void	*ft_malloc(size_t size)
 		ret = alloc_small(size);
 	else
 		ret = alloc_large(size);
+	if (ret == MAP_FAILED)
+		return (NULL);
+	printf("PTR RETURNED\n");
 	return (ret);
 }

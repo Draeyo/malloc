@@ -30,17 +30,16 @@ int		main(int ac, char **av)
 	printf("str: %s\n", str);
 	printf("test: %s\n", test);
 	printf("test2: %s\n", test2);
-	show_alloc_mem();
 	ft_free(test2);
 	ft_free(test);
 	ft_free(str);
-	printf("PAGE_SIZE: %zu\n", PAGE_SIZE);
-	printf("INFO_SIZE: %zu\n", INFO_SIZE);
-	printf("TINY_SIZE: %zu\n", TINY_SIZE);
-	printf("SMALL_SIZE: %zu\n", SMALL_SIZE);
-	printf("TINY_DATA_SIZE: %zu\n", TINY_DATA_SIZE);
-	printf("SMALL_DATA_SIZE: %zu\n", SMALL_DATA_SIZE);
-	printf("TINY_ZONE_SIZE: %zu\n", TINY_ZONE_SIZE);
-	printf("SMALL_ZONE_SIZE: %zu\n", SMALL_ZONE_SIZE);
+	//printf("PAGE_SIZE: %zu\n", PAGE_SIZE);
+	//printf("INFO_SIZE: %zu\n", INFO_SIZE);
+	//printf("TINY_SIZE: %zu\n", TINY_SIZE);
+	//printf("SMALL_SIZE: %zu\n", SMALL_SIZE);
+	//printf("TINY_DATA_SIZE: %zu\n", TINY_DATA_SIZE);
+	//printf("SMALL_DATA_SIZE: %zu\n", SMALL_DATA_SIZE);
+	//printf("TINY_ZONE_SIZE: %zu\n", TINY_ZONE_SIZE);
+	//printf("SMALL_ZONE_SIZE: %zu\n", SMALL_ZONE_SIZE);
 	return (0);
 }

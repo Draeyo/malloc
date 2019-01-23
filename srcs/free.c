@@ -1,72 +1,49 @@
 #include "malloc.h"
 #include <stdio.h>
 
-static size_t	find_mem(void *ptr)
+static void		free_large(void *ptr)
 {
-	t_info	*tmp;
-	void	*addr;
-	size_t	ret;
-	t_info	*prev;
+	t_info		*tmp;
 
-	tmp = g_mem.overall;
-	prev = NULL;
-	while (tmp)
+	tmp = g_mem.large;
+	if (!tmp)
+		return ;
+	while (tmp->next)
 	{
-		addr = tmp->data;
-		printf("tmp: %p\n", addr);
-		printf("ptr: %p\n", ptr);
-		if (addr == ptr)
+		if ((void*)tmp->next == ptr)
 		{
-			if (prev)
-				prev->next = tmp->next;
-			else
-				g_mem.overall = tmp->next;
-			ret = tmp->size;
-			munmap(tmp, sizeof(t_info));
-			return (ret);
+			tmp->next = tmp->next->next;
+			munmap(tmp->next, tmp->next->size);
+			return ;
 		}
-		prev = tmp;
 		tmp = tmp->next;
 	}
-	return (0);
 }
 
 void	free(void *ptr)
 {
-	size_t	i;
+	t_info	*tmp;
 
-	if (ptr)
-	{
-		i = find_mem(ptr);
-		if (i == 0)
-			printf("Can\'t find mem.\n");
-		else
-		{
-			printf("free string : %s, on address %p\n", ptr, ptr);
-			if (!munmap(ptr, i))
-				printf("FREE DONE\n");
-			else
-				printf("FREE FAILED\n");
-		}
-	}
+	if (!ptr)
+		return ;
+	tmp = find_specific(ptr);
+	if (tmp && tmp->size > SMALL_ZONE_SIZE)
+		free_large(tmp);
+	if (tmp)
+		tmp->free = 1;
+	join_free_mem();
 }
 
 void	ft_free(void *ptr)
 {
-	size_t	i;
+	t_info	*tmp;
 
-	if (ptr)
-	{
-		i = find_mem(ptr);
-		if (i == 0)
-			printf("Can\'t find mem.");
-		else
-		{
-			printf("free string : %s, on address %p\n", ptr, ptr);
-			if (!munmap(ptr, i))
-				printf("FREE DONE\n");
-			else
-				printf("FREE FAILED\n");
-		}
-	}
+	if (!ptr)
+		return ;
+	tmp = find_specific(ptr);
+	if (tmp && tmp->size > SMALL_ZONE_SIZE)
+		free_large(tmp);
+	if (tmp)
+		tmp->free = 1;
+	join_free_mem();
 }
