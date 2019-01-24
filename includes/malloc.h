@@ -5,6 +5,8 @@
 # include <unistd.h>
 # include <sys/mman.h>
 # include <sys/types.h>
+# include "libft.h"
+# include "ft_printf.h"
 
 // DEBUG
 #include <stdio.h>
@@ -70,6 +72,18 @@ t_page					g_mem;
 
  void	join_free_mem(void);
 
+ // search.c
  t_info	*find_free_space(t_info *alloc, size_t size);
  t_info	*find_specific(void *ptr);
+
+ //set.c
+ void	*set_each(t_each **last, size_t size, void *loc);
+ void	set_info(size_t size, void *loc);
+ void	update_info(t_info **alloc, size_t size);
+
+ //alloc.c
+ void	*alloc_tiny(size_t size);
+ void	*alloc_small(size_t size);
+ void	*alloc_large(size_t size);
+
 #endif

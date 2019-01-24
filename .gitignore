@@ -1,2 +1,5 @@
 a.out
 bkp_*
+*.o
+*.so
+*.a

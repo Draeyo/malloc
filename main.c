@@ -13,9 +13,9 @@ int		main(int ac, char **av)
 
 	c = av[1][0];
 	nb = atoi(av[2]);
-	str = (char*)ft_malloc(nb + 1);
-	test = (char*)ft_malloc(nb + 1);
-	test2 = (char*)ft_malloc(nb + 1);
+	str = (char*)malloc(nb + 1);
+	test = (char*)malloc(nb + 1);
+	test2 = (char*)malloc(nb + 1);
 	i = 0;
 	while (i < nb)
 	{
@@ -30,9 +30,10 @@ int		main(int ac, char **av)
 	printf("str: %s\n", str);
 	printf("test: %s\n", test);
 	printf("test2: %s\n", test2);
-	ft_free(test2);
-	ft_free(test);
-	ft_free(str);
+	show_alloc_mem();
+	free(test2);
+	free(test);
+	free(str);
 	//printf("PAGE_SIZE: %zu\n", PAGE_SIZE);
 	//printf("INFO_SIZE: %zu\n", INFO_SIZE);
 	//printf("TINY_SIZE: %zu\n", TINY_SIZE);
