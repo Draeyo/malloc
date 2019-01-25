@@ -1,10 +1,31 @@
 #include "malloc.h"
 
+static void		print_hex(unsigned long nb)
+{
+	const char	*tmp = "0123456789abcdef";
+
+	if (nb >= 16)
+	{
+		print_hex(nb / 16);
+		print_hex(nb % 16);
+	}
+	else
+		ft_putchar(tmp[nb]);
+}
+
+static void		print_memory(void *ptr)
+{
+	print_hex((unsigned long)ptr);
+}
+
 static void		print_mem(t_info *zone, char *type)
 {
 	if (zone)
 	{
 		ft_putstr(type);
+		ft_putstr("0x");
+		print_memory(zone);
+		printf("\ncomp : %p\n", zone);
 	}
 //	while (zone)
 //	{
