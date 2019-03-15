@@ -45,10 +45,10 @@ int		main(int ac, char **av)
 	//show_alloc_mem();
 	for (int i = 0; i < 100; i++)
 	{
-		str = (char*)malloc(nb);
+//		str = (char*)malloc(nb);
 		tiny2 = (char*)malloc(nb);
-		free(str);
-		free(tiny2);
+//		free(str);
+//		free(tiny2);
 	}
 	//show_alloc_mem();
 	//printf("PAGE_SIZE: %zu\n", PAGE_SIZE);
