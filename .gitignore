@@ -4,3 +4,4 @@ bkp_*
 *.so
 *.a
 *.swp
+*.h.gch

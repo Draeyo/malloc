@@ -43,20 +43,21 @@ int		main(int ac, char **av)
 	//free(test4);
 	//free(test3);
 	//show_alloc_mem();
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 202; i++)
 	{
 //		str = (char*)malloc(nb);
 		tiny2 = (char*)malloc(nb);
 //		free(str);
-//		free(tiny2);
+		if (i == 100 || i == 150 || i == 200)
+			show_alloc_mem();
+		free(tiny2);
 	}
+	while(1){}
 	//show_alloc_mem();
 	//printf("PAGE_SIZE: %zu\n", PAGE_SIZE);
 	//printf("INFO_SIZE: %zu\n", INFO_SIZE);
 	//printf("TINY_SIZE: %zu\n", TINY_SIZE);
 	//printf("SMALL_SIZE: %zu\n", SMALL_SIZE);
-	//printf("TINY_DATA_SIZE: %zu\n", TINY_DATA_SIZE);
-	//printf("SMALL_DATA_SIZE: %zu\n", SMALL_DATA_SIZE);
 	//printf("TINY_ZONE_SIZE: %zu\n", TINY_ZONE_SIZE);
 	//printf("SMALL_ZONE_SIZE: %zu\n", SMALL_ZONE_SIZE);
 	return (0);
