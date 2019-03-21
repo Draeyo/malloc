@@ -30,10 +30,10 @@ t_info      	*find_free_space(t_info *alloc, size_t size)
 {
     t_info  *tmp;
 
-    if ((tmp = search_free_space(alloc, size)))
+    if ((tmp = search_free_space(alloc, size)) != NULL)
         return (tmp);
     join_free_mem();
-    if ((tmp = search_free_space(alloc, size)))
+    if ((tmp = search_free_space(alloc, size)) != NULL)
         return (tmp);
     return (NULL);
 }
@@ -42,11 +42,11 @@ t_info      	*find_specific(void *ptr)
 {
     t_info  *tmp;
 
-    if ((tmp = search_specific(g_mem.tiny, g_mem.tiny_last, ptr)))
+    if ((tmp = search_specific(g_mem.tiny, g_mem.tiny_last, ptr)) != NULL)
         return (tmp);
-    if ((tmp = search_specific(g_mem.small, g_mem.small_last, ptr)))
+    if ((tmp = search_specific(g_mem.small, g_mem.small_last, ptr)) != NULL)
         return (tmp);
-    if ((tmp = search_specific(g_mem.large, g_mem.large_last, ptr)))
+    if ((tmp = search_specific(g_mem.large, g_mem.large_last, ptr)) != NULL)
         return (tmp);
     return (NULL);
 }
