@@ -19,8 +19,11 @@ static void		print_memory(void *ptr)
 	print_hex((unsigned long)ptr);
 }
 
-static void		print_mem(t_info *zone, char *type)
+static int		print_mem(t_info *zone, char *type)
 {
+	int		ret_size;
+
+	ret_size = 0;
 	if (zone)
 	{
 		ft_putstr(type);
@@ -37,15 +40,26 @@ static void		print_mem(t_info *zone, char *type)
 			print_memory((void*)zone->data + zone->size);
 			ft_putstr(" : ");
 			ft_putnbr(zone->size);
+			ret_size += zone->size;
 			ft_putendl(" octets");
 		}
 		zone = zone->next;
 	}
+	return (ret_size);
 }
 
 void	show_alloc_mem(void)
 {
-	print_mem(g_mem.tiny, "TINY : ");
-	print_mem(g_mem.small, "SMALL : ");
-	print_mem(g_mem.large, "LARGE : ");
+	int		total_size;
+
+	total_size = 0;
+	total_size += print_mem(g_mem.tiny, "TINY : ");
+	total_size += print_mem(g_mem.small, "SMALL : ");
+	total_size += print_mem(g_mem.large, "LARGE : ");
+	if (total_size)
+	{
+		ft_putstr("Total : ");
+		ft_putnbr(total_size);
+		ft_putendl(" octets");
+	}
 }

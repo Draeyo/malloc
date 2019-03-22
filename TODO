@@ -1,4 +1,3 @@
-use free mem for next alloc
 realloc
 mutex
-recover commit : 48f701abf3602dcf849750eb79016b21767efcac
+don't show zone address if no block used inside

@@ -27,7 +27,7 @@ void	free(void *ptr)
 	if (!ptr)
 		return ;
 	tmp = find_specific(ptr);
-	printf("DEBUG : %p\n", tmp);
+//	printf("DEBUG : %p\n", tmp);
 	if (tmp && tmp->size > SMALL_ZONE_SIZE)
 		free_large(tmp);
 	if (tmp)
