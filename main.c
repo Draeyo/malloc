@@ -2,19 +2,14 @@
 
 int		main(void)
 {
-	char	*tiny2, *tiny3;
-	int		nb;
+	char	*addr;
 
-	nb = 50;
-	show_alloc_mem();
-//	for (int i = 0; i < 12; i++)
-//	{
-	tiny2 = (char*)malloc(nb);
-	tiny3 = (char*)malloc(nb);
-	free(tiny2);
-	free(tiny3);
-	show_alloc_mem();
-	//	if (i == 100 || i == 150 || i == 200)
-//	}
+	for (int i = 0; i < 1024; i++)
+	{
+		addr = (char*)malloc(1024);
+		addr[0] = 42;
+		free(addr);
+	}
+	//show_alloc_mem();
 	return (0);
 }
