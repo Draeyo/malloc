@@ -83,4 +83,6 @@ t_page					g_mem;
  void	*alloc_small(size_t size);
  void	*alloc_large(size_t size);
 
+ void	*calloc(size_t count, size_t size);
+
 #endif

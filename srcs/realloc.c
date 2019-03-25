@@ -48,6 +48,8 @@ static void		*re_alloc(void *ptr, size_t size)
 
 void	*realloc(void *ptr, size_t size)
 {
+	void	*ret;
+
 	set_info(size, ptr);
 	ret = re_alloc(ptr, size);
 	return (ret);

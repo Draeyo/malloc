@@ -27,7 +27,6 @@ static int		print_mem(t_info *zone, char *type)
 	if (zone)
 	{
 		ft_putstr(type);
-		ft_putstr("0x");
 		print_memory((void*)zone);
 		ft_putchar('\n');
 	}
