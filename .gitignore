@@ -5,3 +5,5 @@ bkp_*
 *.a
 *.swp
 *.h.gch
+*.tar
+out

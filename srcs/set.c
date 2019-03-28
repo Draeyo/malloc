@@ -6,6 +6,7 @@ void     *set_each(t_each **last, size_t size, void *loc)
 
     if ((tmp = (t_each*)mmap(0, TINY_ZONE_SIZE, PROT, FLAGS, -1, 0)) == MAP_FAILED)
         return (NULL);
+	ft_memset(tmp, 0, TINY_ZONE_SIZE);
     if (*last)
         (*last)->next = tmp;
     tmp->next = NULL;
@@ -50,7 +51,7 @@ void     update_info(t_info **alloc, size_t size)
     next = new->next ? new->next : NULL;
     new->free = 0;
     new->data = (void*)*alloc + INFO_SIZE;
-    if ((new->size - size - INFO_SIZE) > INFO_SIZE)
+    if ((long)(new->size - size - INFO_SIZE) > (long)INFO_SIZE)
     {
         new->next = (void*)new + size + INFO_SIZE;
         tmp = new->next;

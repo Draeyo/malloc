@@ -33,11 +33,11 @@ static void		*re_alloc(void *ptr, size_t size)
 {
 	t_info		*alloc;
 
-	if (!ptr)
+	if (ptr == NULL)
 		return (malloc(size));
 	if ((alloc = find_specific(ptr)) == NULL || (alloc && alloc->free))
 		return (NULL);
-	if ((alloc != NULL && size == 0) || alloc->size > size)
+	if ((ptr != NULL && size == 0) || alloc->size > size)
 	{
 		alloc->free = 1;
 		return (malloc(size));

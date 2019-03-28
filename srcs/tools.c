@@ -5,7 +5,7 @@ static void		join_by_type(t_info **memtype, t_info **last)
 	t_info		*next;
 	t_info		*tmp;
 
-	if (!(tmp = *memtype))
+	if ((tmp = *memtype) == NULL)
 		return ;
 	while (tmp->next)
 	{
