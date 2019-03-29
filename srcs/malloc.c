@@ -3,45 +3,19 @@
 
 void	print_trace(int	nb)
 {
-//	void *array[10];
-//	size_t size;
-//	char **strings;
-//	size_t i;
-//
-//	size = backtrace(array, 10);
-//	strings = backtrace_symbols(array, size);
+	void *array[10];
+	size_t size;
+	char **strings;
+	size_t i;
+
+	size = backtrace(array, 10);
+	strings = backtrace_symbols(array, size);
 
 	(void)nb;
-//	for (i = 0; i < size; i++)
-//		ft_putendl(strings[i]);
+	for (i = 0; i < size; i++)
+		ft_putendl(strings[i]);
 
-//	free(strings);
-	show_alloc_mem();
-//	ft_print_mem(g_mem.tiny_last);
-//	ft_putchar('\n');
-//	ft_putendl("LAST");
-//	ft_print_mem(g_mem.tiny_last->data);
-//	ft_putchar('\n');
-//	ft_putendl("OVERALL");
-//	while (g_mem.tiny)
-//	{
-//		ft_print_mem(g_mem.tiny->data);
-//		ft_putstr(" : ");
-//		ft_putnbr(g_mem.tiny->size);
-//		ft_putstr(" : ");
-//		ft_print_mem(g_mem.tiny->data + g_mem.tiny->size);
-//		ft_putstr(" : ");
-//		ft_putstr(g_mem.tiny->free == 0 ? "NOT FREE" : "FREE");
-//		ft_putchar('\n');
-//		if (g_mem.tiny->next)
-//		{
-//			ft_putnbr(g_mem.tiny->next->data - (g_mem.tiny->data + g_mem.tiny->size));
-//			ft_putchar('\n');
-//		}
-//		if (g_mem.tiny->next && (g_mem.tiny->data + g_mem.tiny->size) == g_mem.tiny->next->data)
-//			ft_putendl("OVERLAP");
-//		g_mem.tiny = g_mem.tiny->next;
-//	}
+	free(strings);
 	exit(1);
 }
 
@@ -64,6 +38,8 @@ void	*malloc(size_t size)
 	set_info(size, ret);
 	ft_putstr("+ ");
 	ft_print_mem(ret);
+	ft_putstr(" ");
+	ft_putnbr(size);
 	ft_putchar('\n');
 	return (ret);
 }

@@ -6,4 +6,4 @@ bkp_*
 *.swp
 *.h.gch
 *.tar
-out
+*.dSYM
