@@ -2784,5 +2784,5 @@ ptr_10c789678 = NULL;
 cust_free(ptr_10c789ba9);
 ptr_10c789ba9 = NULL;
 printf("Nombre de checks %d.\nNombre de free %d.\nNombre de malloc/memset %d.\nOai, y'a beaucoup trop de checks :D\nDONE\n", count_check, count_free, count_malloc_memset);
-mdr();
+//mdr();
 }

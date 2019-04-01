@@ -15,8 +15,22 @@ void	print_trace(int	nb)
 	for (i = 0; i < size; i++)
 		ft_putendl(strings[i]);
 
+	ft_putstr("SIGNAL : ");
+	ft_putnbr(nb);
+	ft_putchar('\n');
 	free(strings);
+	//perror(NULL);
 	exit(1);
+}
+
+size_t	ft_mem_padding(size_t size)
+{
+	size_t ret;
+
+	ret = 0;
+	while (ret < size)
+		ret += 16;
+	return (ret);
 }
 
 void	*malloc(size_t size)
@@ -24,7 +38,12 @@ void	*malloc(size_t size)
 	void	*ret;
 
 	//set_info(size, NULL);
-	signal(11, &print_trace);
+	for (int i = 0; i < 18; ++i)
+	{
+		signal(i, &print_trace);
+	}
+	//signal(4, &print_trace);
+	size = ft_mem_padding(size);
 	if (size <= 0 || size >= SIZE_MAX)
 		return (NULL);
 	else if (size <= TINY_SIZE)
@@ -37,9 +56,9 @@ void	*malloc(size_t size)
 		return (NULL);
 	set_info(size, ret);
 	ft_putstr("+ ");
-	ft_print_mem(ret);
+	ft_putnbr((int)ret % 16);
 	ft_putstr(" ");
-	ft_putnbr(size);
+	ft_putnbr(size % 16);
 	ft_putchar('\n');
 	return (ret);
 }
@@ -48,6 +67,7 @@ void	*ft_malloc(size_t size)
 {
 	void	*ret;
 
+//	size = ft_mem_padding(size);
 	set_info(size, NULL);
 	if (size <= 0 || size >= SIZE_MAX)
 		return (NULL);

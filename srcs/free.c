@@ -26,9 +26,9 @@ void	free(void *ptr)
 
 	if (!ptr)
 		return ;
-	ft_putstr("- ");
-	ft_print_mem(ptr);
-	ft_putchar('\n');
+	// ft_putstr("- ");
+	// ft_print_mem(ptr);
+	// ft_putchar('\n');
 	tmp = find_specific(ptr);
 	if (tmp && tmp->size > SMALL_ZONE_SIZE)
 		free_large(tmp);

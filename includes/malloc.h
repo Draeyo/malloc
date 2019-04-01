@@ -14,7 +14,7 @@
 // DEBUG
 
 # define PROT	PROT_READ | PROT_WRITE
-# define FLAGS	MAP_ANON | MAP_PRIVATE
+# define FLAGS	MAP_ANON | MAP_SHARED
 
 # define PAGE_SIZE		(size_t)getpagesize()
 # define INFO_SIZE		(size_t)sizeof(t_info)
@@ -44,6 +44,7 @@ typedef struct			s_each
 		size_t			size;
 		void			*loc;
 		size_t			left;
+		char			padding[8];
 }						t_each;
 
 typedef struct			s_page
@@ -55,6 +56,7 @@ typedef struct			s_page
 		t_info			*large;
 		t_info			*large_last;
 		t_each			*overall;
+		char			padding[8];
 }						t_page;
 
 t_page					g_mem;
@@ -68,6 +70,7 @@ t_page					g_mem;
  void	*ft_malloc(size_t size);
 
  void	join_free_mem(void);
+ size_t	ft_mem_padding(size_t size);
 
  // search.c
  t_info	*find_free_space(t_info *alloc, size_t size);
