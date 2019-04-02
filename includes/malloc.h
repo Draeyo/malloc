@@ -5,12 +5,13 @@
 # include <unistd.h>
 # include <sys/mman.h>
 # include <sys/types.h>
+# include <pthread.h>
 # include "libft.h"
 # include "ft_printf.h"
 
 // DEBUG
 #include <stdio.h>
-# define DEBUG(x) printf("DEBUG %d\n", x)
+# define DEBUG() ft_putendl("DEBUG")
 // DEBUG
 
 # define PROT	PROT_READ | PROT_WRITE
@@ -24,6 +25,8 @@
 
 # define TINY_ZONE_SIZE		(size_t)(TINY_SIZE + INFO_SIZE) * 100
 # define SMALL_ZONE_SIZE	(size_t)(SMALL_SIZE + INFO_SIZE) * 100
+// # define TINY_ZONE_SIZE		(size_t)(TINY_SIZE * 100) + INFO_SIZE
+// # define SMALL_ZONE_SIZE	(size_t)(SMALL_SIZE * 100) + INFO_SIZE
 
 # define TINY_TYPE		1
 # define SMALL_TYPE		2

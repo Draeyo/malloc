@@ -55,11 +55,11 @@ void	*malloc(size_t size)
 	if (ret == MAP_FAILED)
 		return (NULL);
 	set_info(size, ret);
-	ft_putstr("+ ");
-	ft_putnbr((int)ret % 16);
-	ft_putstr(" ");
-	ft_putnbr(size % 16);
-	ft_putchar('\n');
+	// ft_putstr("+ ");
+	// ft_putnbr((int)ret % 16);
+	// ft_putstr(" ");
+	// ft_putnbr(size % 16);
+	// ft_putchar('\n');
 	return (ret);
 }
 

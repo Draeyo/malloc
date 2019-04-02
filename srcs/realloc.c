@@ -50,13 +50,8 @@ void	*realloc(void *ptr, size_t size)
 {
 	void	*ret;
 
-	// ft_putendl("DEBUT REALLCOC");
-	// ft_print_mem(ptr);
-	// ft_putchar('\n');
 	size = ft_mem_padding(size);
 	ret = re_alloc(ptr, size);
-	// ft_print_mem(ret);
-	// ft_putendl("\nFIN REALLOC");
 	set_info(size, ptr);
 	return (ret);
 }
